@@ -1,13 +1,11 @@
 ---
 title: "Zachary Weitzman BCOR381"
-author: "Zachary Weitzman"
-date: "2023-01-24"
 output: html_document
 ---
 
 # Homeworks  
-This table contains the links to each homework
 
-Homework Number | Link
---------------- | ----
-HW 1            | 
+>Homework # | Link
+>-----------| ----
+>HW 1       | 
+
