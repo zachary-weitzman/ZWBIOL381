@@ -6,7 +6,7 @@ output:
   prettydoc::html_pretty:
     theme: architect
 ---
-# <span style="color:green">Homeworks</span>
+# <span style="color:black">Homeworks</span>
 
 >Number/Link |Description 
 >----------- | -----------
