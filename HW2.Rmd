@@ -1,0 +1,7 @@
+---
+title: "HW2"
+author: "Zachary Weitzman"
+date: "2023-01-25"
+output: html_document
+---
+This is a website for homework 2!!!
