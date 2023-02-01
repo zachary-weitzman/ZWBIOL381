@@ -1,0 +1,59 @@
+---
+title: "HW3"
+author: "Zachary Weitzman"
+date: "2023-02-01"
+output: html_document
+---
+# <span style="color:blue">HW3</span>
+## <span style="color:red">Number 1</span>
+```
+Find: \W{2,}
+Replace: ,
+```
+Here I am trying to find any non-alphanumeric space repeated at least twice. This means any characters or digits, as well as normal punctiontion like a decimal point aren't highlighted. I then replace them with a comma to complete the output.
+
+## <span style="color:red">Number 2</span>
+```
+FIND: (\w+),\s(\w+),\s(.*)
+REPLACE: \2 \1 (\3)
+```
+I am looking for three subpatterns the first is a letter repeated one or more times, this subpattern is followed by a comma and whitespace then the second subpattern is the same. The third is the rest of the characters. I then return the each subpattern in its poper place and notation.
+
+## <span style="color:red">Number 3</span>
+```
+Find: (.+\b.mp3) (.+\b.mp3) (.+\b.mp3) (.+\b.mp3)
+Replace: \1\r\2\r\3\r\4\r
+```
+This one I found each pattern ending in .mp3 and placed a carrige return after. A better way is below which doesn't require to know the number of .mp3 files
+```
+Find: \s\d
+Replace: \r\1
+```
+
+## <span style="color:red">Number 4</span>
+```
+Find: (\d{4})\s(.+)(.mp3)
+Replace: \2_\1\3
+```
+First I find the four digits in a subpattern, then I create a subpattern for the name of the song and of .mp3. I can then rewrite the script in the write notation using the 3 subpatterns
+
+## <span style="color:red">Number 5</span>
+```
+Find: (^\w)(\w+),(\w+),(.+),(\d+)
+Replace: \1_\3,\5
+```
+I start my search that tghe begining of the line and find the first letter as subpattern 1. I then subpattern the rest of the first word as #2. I find a comma to know I've reached thge end of the word and subpattern the whole next word as #3. I then subpattern the first number as #4 and the second number as 5. I can then recall the subpatterns I want in the notation needed.
+
+## <span style="color:red">Number 6</span>
+```
+Find: (^\w)(\w+),(\w{4})(\w+),(.+),(\d+)
+Replace: \1_\3,\6
+```
+I completed the same Find but this time I created another subpattern for the first four letters of the second word. This allows me to recall just the first four letters in the replace.
+
+## <span style="color:red">Number 7</span>
+```
+Find: (^\w{3})(\w+),(\w{3})(\w+),(.+),(\d+)
+Replace: \1\3, \6, \5
+```
+I completed a very similar, find as the last two but I had the subpatterns include the first 3 letters of each word. I then replaced them in the correct order.
