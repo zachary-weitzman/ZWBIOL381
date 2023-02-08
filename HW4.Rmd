@@ -1,0 +1,65 @@
+---
+title: "HW4"
+author: "Zachary Weitzman"
+date: "2023-02-08"
+output: html_document
+---
+# <span style="color:blue">HW4</span>
+## <span style="color:red">Number 1</span>
+```{r}
+x<-1.1
+a<-2.2
+b<-3.3
+z<-x^a^b
+print(z)
+z<-(x^a)^b
+print(z)
+z<-3*x^3 + 2*x^2 +1
+print(z)
+```
+Using a carrot makes exponents, the asterisks is for multiplying a digit and a saved value.
+
+## <span style="color:red">Number 2</span>
+```{r}
+s1<-seq(1,8)
+s2<-seq(7,1)
+s3<-c(s1,s2)
+print(s3)
+g<-c(1:5)
+rep(g, times=g)
+f<-c(5:1)
+rep(f, times=g)
+```
+For the first, by creating a forward sequence and a backward sequence and combining I could create the desired sequence. The second I needed to 'times' each by the corresponding number in the vector. The same happened for the last except I used a new sequence from 5 to 1.
+
+## <span style="color:red">Number 3</span>
+```{r}
+xcoord<-runif(1,1,10)
+ycoord<-runif(1,1,10)
+theta<-atan(ycoord/xcoord)
+r<-ycoord/sin(theta)
+print(r)
+print(theta)
+```
+Taking the x and y-coords I solved for sin and cos of theta which equals y/r and x/r repectivly. Knowing that tan(theta) equals sin(theta)/cos(theta), than yr/xr=tan(theta). the r's cancel and y/x=tan(theta) using inverse tangent I found theta and used it to find r.
+
+## <span style="color:red">Number 4</span>
+```{r}
+queue<-c("sheep","fox", "owl", "ant")
+queue1<-c(queue,"serpent")
+queue2<-queue1[!queue1=="sheep"]
+queue3<-c("donkey",queue2)
+queue4<-queue3[!queue3=="serpent"]
+queue5<-queue4[!queue4=="owl"]
+queue6<-c(queue5[!queue5=="ant"],"aphid","ant")
+which(queue6=="aphid")
+```
+By creating a new queue vector which the changes are concatenated in or removed by recalling everything from the last queue vector except for the unwanted animal. Then using the which() function I can determine aphids position in the vector.
+
+## <span style="color:red">Number 5</span>
+```{r}
+nums<-1:100
+nums2<-nums[nums%%2 & nums%%3 & nums%%7 !=0]
+print(nums2)
+```
+First I created a vector with numbers 1 to 100. I then created a new vector same as the old except every number was divided by 2, 3 and 7 and only those numbers whose remainder was not equal to zero were kept.
