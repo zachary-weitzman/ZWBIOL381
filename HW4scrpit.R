@@ -26,7 +26,7 @@ print(theta)
 
 queue<-c("sheep","fox", "owl", "ant")
 queue1<-c(queue,"serpent")
-queue2<-queue1[-c("sheep")]
+queue2<-queue1[!queue1=="sheep"]
 queue3<-c("donkey",queue2)
 queue4<-queue3[!queue3=="serpent"]
 queue5<-queue4[!queue4=="owl"]
@@ -34,10 +34,8 @@ queue6<-c(queue5[!queue5=="ant"],"aphid","ant")
 which(queue6=="aphid")
 
 nums<-1:100
-nums2<-nums[nums%%2 !=0]
-nums3<-nums2[nums2%%3 !=0]
-nums4<-nums3[nums3%%7 !=0]
-print(nums4)
+nums2<-nums[nums%%2 & nums%%3 & nums%%7 !=0]
+print(nums2)
 
 
 #Atomic Vector Intro#
