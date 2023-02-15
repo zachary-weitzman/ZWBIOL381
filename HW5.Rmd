@@ -1,0 +1,49 @@
+---
+title: "HW5"
+author: "Zachary Weitzman"
+date: "2023-02-15"
+output: html_document
+---
+# <span style="color:blue">HW5</span>
+## <span style="color:red">Number 1</span>
+```{r}
+n_dims<-sample(3:10,1) #Take a sample of a single integer from 3 to 10
+n_dims2<-seq(from=1,to=(n_dims)^2) #Make a sequence from 1 to n_dims^2
+n_dims3<-sample(n_dims2) #sample n_dims to rearrange
+m1<-matrix(data=n_dims3, nrow=n_dims) #Because we have n_dims^2 number of values each row and col lenght must be equal to n_dims to make a square matrix
+print(m1)
+m2<-Conj(t(m1)) #The Conj function gives the conjugate of whats within, t() refers to a matrix
+print(m2)
+sum(m2[1,]) #[1,] gives me the whole row and sum function sums the values
+mean(m2[1,]) #[1,] gives me the whole row and mean function sums the values
+sum(m2[n_dims,]) #Using n_dims as the row ensures I get the last row no matter the number because the matrix is built with n_dims rows
+mean(m2[n_dims,])
+eigen(m2) #This produces irrational eigenvalues and vectors
+typeof(eigen(m2))
+```
+
+
+## <span style="color:red">Number 2</span>
+```{r}
+data1<-runif(16) #16 random numbers between 0 and 1
+my_matrix<-matrix(data=data1,nrow=4) #martix of random number vector with 4 cols and 4 rows
+data2<-runif(100) #100 random numbers between 0 and 1
+my_logical<-data2>0.5 #Assign TRUE and FALSE based on if number is greater or less than 0.5
+my_letters<-sample(letters,26, replace=F) #Randomly sample all 26 letters, once each
+my_list<-list(my_matrix[2,2],my_logical[2],my_letters[2]) #Combine the data into a list
+my_vector<-c(my_list[[1]],my_list[[2]],my_list[[3]]) #Double square brackets referres to the value within the object so I can c() the value of each thing together
+print(my_vector)
+```
+
+
+## <span style="color:red">Number 3</span>
+```{r}
+mydf<-data.frame(runif(26,1,10),sample(LETTERS,26,replace=F)) #Make a dataframe with the first col being 26 random integers between 1 and 10, the second col a sample of all 26 letters
+colnames(mydf)<-c("my_units","my_letters") #assigning each col its proper name
+mydf[sample(1:26,4),1]<-NA #Assigning NA to a sample of 4 rows within col 1 of my dataframe; mydf[] refrences the dataframe; sample(1:26,4),1 tells R to sample the 4 rows within column 1
+which(is.na(mydf[,1])) #Which() outputs the rows, is.na() determines which values are NA
+mydf$my_letters<-sort(mydf$my_letters) #assign my_letters col of dataframe to a sorted version of the col
+print(mydf)
+mean(mydf[,1],na.rm=T) #Using na.rm=T tells R to ignore NA values when computing the mean
+```
+
