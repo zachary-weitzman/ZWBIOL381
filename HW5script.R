@@ -26,6 +26,6 @@ mydf<-data.frame(runif(26,1,10),sample(LETTERS,26,replace=F))
 colnames(mydf)<-c("my_units","my_letters")
 mydf[sample(1:26,4),1]<-NA
 which(is.na(mydf[,1]))
-mydf<-data.frame(mydf[,1],sort(mydf[,2]))
+mydf$my_letters<-sort(mydf$my_letters)
 mean(mydf[,1],na.rm=T)
      
