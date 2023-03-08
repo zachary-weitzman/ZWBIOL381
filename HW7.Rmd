@@ -1,0 +1,121 @@
+---
+title: "HW7"
+author: "Zachary Weitzman"
+date: "2023-03-08"
+output: html_document
+---
+```{r}
+library(ggplot2)
+library(MASS)
+library(tidyverse)
+
+z <- rnorm(n=3000,mean=0.2)
+z <- data.frame(1:3000,z)
+names(z) <- list("ID","myVar")
+z <- z[z$myVar>0,]
+str(z)
+summary(z$myVar)
+
+p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",linewidth=0.2)
+print(p1)
+
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+
+normPars <- fitdistr(z$myVar,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"]# note structure of getting a named attribute
+
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$myVar),len=length(z$myVar))
+
+stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n=length(z$myVar), args = list(mean = meanML, sd = sdML))
+p1 + stat
+
+expoPars <- fitdistr(z$myVar,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$myVar), args = list(rate=rateML))
+p1 + stat + stat2
+
+stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$myVar), args = list(min=min(z$myVar), max=max(z$myVar)))
+p1 + stat + stat2 + stat3
+
+gammaPars <- fitdistr(z$myVar,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML))
+p1 + stat + stat2 + stat3 + stat4
+
+pSpecial <- ggplot(data=z, aes(x=myVar/(max(myVar + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$myVar/max(z$myVar + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$myVar), args = list(shape1=shape1ML,shape2=shape2ML))
+
+pSpecial + statSpecial
+
+
+
+colony <- read.table("Colony.csv",header=TRUE,sep=",")
+colony$TotalL<-as.numeric(colony$TotalL)
+colony<-colony[1:150,]
+ot<-ggplot(data=colony, aes(x=TotalL, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",linewidth=0.2,binwidth=5)
+print(ot)
+ot <-  ot +  geom_density(linetype="dotted",size=0.75)
+print(ot)
+normParz <- fitdistr(colony$TotalL,"normal")
+print(normParz)
+str(normParz)
+normParz$estimate["mean"]# note structure of getting a named attribute
+meancolony<- normParz$estimate["mean"]
+sdcolony<- normParz$estimate["sd"]
+colval <- seq(0,max(colony$TotalL),len=length(colony$TotalL))
+statc<- stat_function(aes(x = colval, y = ..y..), fun = dnorm, colour="red", n=length(colony$TotalL), args = list(mean = meancolony, sd = sdcolony))
+ot + statc
+expoParz<-fitdistr(colony$TotalL,"exponential")
+ratecolony <- expoParz$estimate["rate"]
+statc2 <- stat_function(aes(x = colval, y = ..y..), fun = dexp, colour="blue", n = length(colony$TotalL), args = list(rate=ratecolony))
+ot + statc + statc2
+
+statc3 <- stat_function(aes(x = colval, y = ..y..), fun = dunif, colour="darkgreen", n = length(colony$TotalL), args = list(min=min(colony$TotalL), max=max(colony$TotalL)))
+ot + statc + statc2 + statc3
+
+gammaParz <- fitdistr(colony$TotalL,"gamma")
+shapecolony <- gammaParz$estimate["shape"]
+ratecolony <- gammaParz$estimate["rate"]
+
+statc4 <- stat_function(aes(x = colval, y = ..y..), fun = dgamma, colour="brown", n = length(colony$TotalL), args = list(shape=shapecolony, rate=ratecolony))
+ot + statc + statc2 + statc3 + statc4
+colSpecial <- ggplot(data=colony, aes(x=TotalL/(max(TotalL + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+betaParz <- fitdistr(x=colony$TotalL/max(colony$TotalL + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1col <- betaParz$estimate["shape1"]
+shape2col <- betaParz$estimate["shape2"]
+statcolSpecial <- stat_function(aes(x = colval, y = ..y..), fun = dbeta, colour="orchid", n = length(colony$TotalL), args = list(shape1=shape1col,shape2=shape2col))
+
+colSpecial + statcolSpecial
+```
+A normal distribution fits best on my Data
+```{r}
+simcol<-data.frame(1:150,rnorm(n=150,mean=meancolony,sd=sdcolony))
+simcol$valz<-simcol$rnorm.n...150..mean...meancolony..sd...sdcolony.
+simplot<-ggplot(data=simcol,aes(x=valz,y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",linewidth=0.2,binwidth=5)
+simden<-simplot +geom_density(linetype="dotted",size=0.75)
+simden
+ot
+```
+The two histogram profiles look very similar, but the simulated data is much broader than the real data. This is because the real data was more of a t-distribution than a normal distribution which meant that it had a sharper peak than the simulation. Even so, I think that the simulation does a pretty good job simulating realistic data, because the two did not differ enough to skew the data too much.
