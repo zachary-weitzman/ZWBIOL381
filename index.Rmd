@@ -15,5 +15,5 @@ output:
 > [HW3](HW3.html)|Using Regular Expressions
 > [HW4](HW4.html)|Atomic Vectors Part 1
 > [HW5](HW5.html)|Matrices, List & Dataframes
->
+> [HW6](HW6.html)|dplyr
 >[HW7](HW7.html)|Simulating and Fitting Data

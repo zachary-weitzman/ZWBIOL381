@@ -5,24 +5,24 @@ date: "2023-03-08"
 output: html_document
 ---
 ```{r}
-library(ggplot2)
-library(MASS)
-library(tidyverse)
-
+#library(ggplot2)
+#library(MASS)
+#library(tidyverse)
 z <- rnorm(n=3000,mean=0.2)
 z <- data.frame(1:3000,z)
 names(z) <- list("ID","myVar")
 z <- z[z$myVar>0,]
 str(z)
 summary(z$myVar)
-
 p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
   geom_histogram(color="grey60",fill="cornsilk",linewidth=0.2)
 print(p1)
-
+```
+```{r}
 p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
 print(p1)
-
+```
+```{r}
 normPars <- fitdistr(z$myVar,"normal")
 print(normPars)
 str(normPars)

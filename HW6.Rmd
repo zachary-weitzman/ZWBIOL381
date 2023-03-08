@@ -1,0 +1,60 @@
+---
+title: "HW6"
+author: "Zachary Weitzman"
+date: "2023-03-08"
+output: html_document
+---
+```{r}
+library(tidyverse)
+iris<-iris
+view(iris)
+```
+1) Iris contains 150 observations of 4 numeric varibales and 1 factored variable. The factored variable, Species, containes 3 levels; setosa, versicolor, and virginica
+```{r}
+iris1<-filter(iris,Species %in% c("virginica","versicolor") & Sepal.Length>6 &Sepal.Width>2.5)
+```
+2) We now have 56 observations but still have 5 variables.
+```{r}
+iris2<-iris1[,c("Species","Sepal.Length","Sepal.Width")]
+```
+3) We now have 3 variables, Species, Sepal Lenght, and Width, but still 56 observations
+
+4)
+```{r}
+iris3<-arrange(iris2,by=desc(Sepal.Length))
+head(iris3)
+```
+```{r}
+iris4<-mutate(iris3,Sepal.Area=Sepal.Length*Sepal.Width,.keep="all")
+```
+5) We still have 56 observations but now have a fourth variable, Sepal.Area
+
+6)
+```{r}
+iris5<-c(mean(iris4$Sepal.Length),mean(iris4$Sepal.Width),length(iris$Species))
+print(iris5)
+```
+7)
+```{r}
+iris6<-iris4 %>% group_by(Species) %>%
+  summarise(mean_Length=mean(Sepal.Length),mean_Width=mean(Sepal.Width),n())
+print(iris6)
+```
+8)
+```{r}
+irisFinal<- iris %>%
+  filter(Species %in% c("virginica","versicolor") & Sepal.Length>6 &Sepal.Width>2.5) %>%
+  select("Species","Sepal.Length","Sepal.Width") %>%
+  arrange(by=desc(Sepal.Length)) %>%
+  mutate(Sepal.Area=Sepal.Length*Sepal.Width,.keep="all") %>%
+  group_by(Species) %>%
+  summarise(mean_Length=mean(Sepal.Length),mean_Width=mean(Sepal.Width),n())
+print(irisFinal)
+print(iris6)
+```
+9)
+```{r}
+irislong<- iris %>%
+  pivot_longer(cols=1:4,names_to="Measure", values_to="Value")
+head(irislong)
+```
