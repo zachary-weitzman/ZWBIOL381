@@ -5,9 +5,9 @@ date: "2023-03-08"
 output: html_document
 ---
 ```{r}
-#library(ggplot2)
-#library(MASS)
-#library(tidyverse)
+library(ggplot2)
+library(MASS)
+library(tidyverse)
 z <- rnorm(n=3000,mean=0.2)
 z <- data.frame(1:3000,z)
 names(z) <- list("ID","myVar")
