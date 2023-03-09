@@ -16,4 +16,5 @@ output:
 > [HW4](HW4.html)|Atomic Vectors Part 1
 > [HW5](HW5.html)|Matrices, List & Dataframes
 > [HW6](HW6.html)|dplyr
->[HW7](HW7.html)|Simulating and Fitting Data
+>[HW7](HW7 2.html)|Simulating and Fitting Data
+
