@@ -17,4 +17,5 @@ output:
 > [HW5](HW5.html)|Matrices, List & Dataframes
 > [HW6](HW6.html)|dplyr
 >[HW7](HW7 2.html)|Simulating and Fitting Data
+>[HW8](HW8.html)|Simulated Data for Hypothesis Testing
 

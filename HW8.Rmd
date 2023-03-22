@@ -1,0 +1,93 @@
+---
+title: "HW8"
+author: "Zachary Weitzman"
+date: "2023-03-22"
+output: html_document
+---
+## Pulling Packages
+```{r,eval=F}
+library(dplyr)
+library(ggplot2)
+```
+
+## Gathering Data, Means, and Variances
+```{r,eval=F}
+colony<- read.table("Colony.csv",header=TRUE,sep=",")
+colony$TotalL<-as.numeric(colony$TotalL)
+colony$ratio<-colony$FootL/colony$TotalL
+mean(colony$ratio[colony$Abbrev.=="MIPE"],na.rm=T)
+sd(colony$ratio[colony$Abbrev.=="MIPE"],na.rm=T)
+filter(colony, Abbrev.=="PEMA")
+```
+
+# Starting sample sizes, means, and variances
+
+>Species|Size|Mean|Variance
+>-------|----|----|---------
+>PELE | 127 | 0.124 | 0.036
+>MIPE | 5 | 0.141 | 0.012
+>PEMA | 50 | 0.138 | 0.025
+
+From my research data I pulled the Foot length and Total length of 3 colony species to to determine if there is a difference between foot to total length ratio between species. The mean foot/total length ratio was calculated from the data to produce these sample sizes, means and variances.
+
+## Creating the Simulated Data
+```{r}
+PELE<-data.frame("PELE",rnorm(127,0.124,0.036))
+colnames(PELE)<-c("Species","Ratio")
+MIPE<-data.frame("MIPE",rnorm(5,0.141,0.012))
+colnames(MIPE)<-c("Species","Ratio")
+PEMA<-data.frame("PEMA",rnorm(50,0.138,0.025))
+colnames(PEMA)<-c("Species","Ratio")
+simcolony<-rbind(PEMA,PELE,MIPE)
+```
+
+# Null Hypothesis:
+There is no significant difference between foot to total length ratio between species
+
+# ANOVA and Graphing
+```{r}
+sim_aov<-aov(Ratio~Species,data=simcolony)
+summary(sim_aov)
+boxplot(data=simcolony,Ratio~Species)
+```
+
+An anova shows that there is a significant difference in foot to total length ratios between species. The boxplot of the ratios visually shows the difference.
+
+## Changing Means
+```{r}
+PELE2<-data.frame("PELE",rnorm(127,0.123,0.036))
+colnames(PELE2)<-c("Species","Ratio")
+MIPE2<-data.frame("MIPE",rnorm(5,0.139,0.012))
+colnames(MIPE2)<-c("Species","Ratio")
+PEMA2<-data.frame("PEMA",rnorm(50,0.136,0.025))
+colnames(PEMA2)<-c("Species","Ratio")
+simcolony2<-rbind(PEMA2,PELE2,MIPE2)
+```
+
+# ANOVA and Graphing
+```{r}
+sim_aov2<-aov(Ratio~Species,data=simcolony2)
+summary(sim_aov2)
+boxplot(data=simcolony2,Ratio~Species)
+```
+
+After changing the mean of each group , especailly lowering the mean, caused the significance to drop. The further apart the means were the more significant it became as expected but moving the means an equal amount in each group would randomly jump above and below the 0.05 alpha threshold.
+
+## Changing Sample Size
+```{r}
+PELE3<-data.frame("PELE",rnorm(40,0.124,0.036))
+colnames(PELE3)<-c("Species","Ratio")
+MIPE3<-data.frame("MIPE",rnorm(40,0.141,0.012))
+colnames(MIPE3)<-c("Species","Ratio")
+PEMA3<-data.frame("PEMA",rnorm(40,0.138,0.025))
+colnames(PEMA3)<-c("Species","Ratio")
+simcolony3<-rbind(PEMA3,PELE3,MIPE3)
+```
+# ANOVA and Graphing
+```{r}
+sim_aov3<-aov(Ratio~Species,data=simcolony3)
+summary(sim_aov3)
+boxplot(data=simcolony3,Ratio~Species)
+```
+
+I dropped all three sample sizes to the smallest sample size of 5, where the analysis was not significant. I then kept raising the sizes evenly which lowered the p-value of the anova. When I reached a sample size of 40 I found that the anova produced a significant result most of the time. I still however recieved the occasional randomized result that was not significant. This makes sense that as I have larger sample sizes and they trend closer toward the mean that my anova would be significant on more of the random samples.
