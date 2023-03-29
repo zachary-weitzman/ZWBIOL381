@@ -1,0 +1,32 @@
+---
+title: "HW9"
+author: "Zachary Weitzman"
+date: "2023-03-29"
+output: html_document
+---
+# Number 1
+```{r}
+library(dplyr)
+library(ggplot2)
+colony<- read.table("Colony.csv",header=TRUE,sep=",")
+source("9Functions.R")
+clean<- clean_data(colony)
+pele<-MeanFinder(clean,"PELE")
+mipe<-MeanFinder(clean,"MIPE")
+pema<-MeanFinder(clean,"PEMA")
+sim<-SimCreator(pele,mipe,pema)
+graph<-ANOVATOR(sim)
+```
+
+# Number 2
+```{r}
+library(dplyr)
+library(ggplot2)
+source("9Functions.R")
+clean<-clean_data(colony)
+pele<-MeanFinder2.0(clean,"PELE")
+mipe<-MeanFinder2.0(clean,"MIPE")
+pema<-MeanFinder2.0(clean,"PEMA")
+sim<-SimCreator2.0(pele,mipe,pema)
+ANOVATOR2.0(sim)
+```
