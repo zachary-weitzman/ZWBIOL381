@@ -19,5 +19,5 @@ output:
 > [HW7](HW7 2.html)|Simulating and Fitting Data
 > [HW8](HW8.html)|Simulated Data for Hypothesis Testing
 > [HW9](HW9.html)|Organizing Code w/ Structured Programing 
-> [HW9 Additon](9Functions.R)|Functions Page for HW9
+> [HW9 Additon](9Functions.html)|Functions Page for HW9
 
