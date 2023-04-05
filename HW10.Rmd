@@ -1,0 +1,68 @@
+---
+title: "HW10"
+author: "Zachary Weitzman"
+date: "2023-04-05"
+output: html_document
+---
+## Number 1
+```{r}
+x<-0:5
+vector<-sample(x,50,replace=T)
+counter<-0
+for (i in 1:length(vector)) {
+  if (vector[i]==0) {
+    counter<-counter+1
+    }
+  print(counter)
+}
+```
+
+## Number 2
+```{r}
+counter2<-length(which(vector==0))
+print(counter2)
+```
+
+## Number 3
+```{r}
+matrixer<-function(x,y){
+  mat<-matrix(data=NA,nrow=x,ncol=y)
+  for (i in 1:x){
+    for (j in 1:y){
+    mat[i,j]<-j*i
+    print(mat)
+    }
+  }
+}
+matrixer(5,6)
+```
+
+## Number 4
+```{r}
+PELE<-data.frame(rep("PELE",10),rnorm(10,5,1))
+colnames(PELE)<-c("Species","Length")
+PEMA<-data.frame(rep("PEMA",10),rnorm(10,20,.7))
+colnames(PEMA)<-c("Species","Length")
+MIPE<-data.frame(rep("MIPE",10),rnorm(10,35,1.3))
+colnames(MIPE)<-c("Species","Length")
+data<-rbind(PELE,PEMA,MIPE)
+#meanc<-c(mean(data$Length,Species="PELE"),mean(data$Length,Species="PEMA"),mean(data$Length,Species="MIPE"))
+meaner<-function(x){
+  x$Length<-sample(x$Length)
+  means<-tapply(x$Length,x$Species,mean)
+  return(means)
+}
+
+simulation<-matrix(nrow=100,ncol=4)
+for(i in 1:100){
+  simulation[i,]<-c(i,meaner(data))
+}
+
+colnames(simulation)<-c("Replicate","PELE","PEMA","MIPE")
+print(simulation)
+
+hist(simulation[,2])
+hist(simulation[,3])
+hist(simulation[,4])
+
+```
