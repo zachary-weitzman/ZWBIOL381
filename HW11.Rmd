@@ -1,0 +1,45 @@
+---
+title: "HW11"
+author: "Zachary Weitzman"
+date: "2023-04-12"
+output: html_document
+---
+
+```{r,include=FALSE}
+source("HW11Functions.R")
+```
+```{r}
+files<-list.files(pattern="20[1-9][0-9]")
+# Create data frame to hold file summary statistics
+ID <- seq_along(files)
+file_name<-c("2014","2015","2016","2017","2018","2019","2020","2021","2022")
+slope <- rep(NA,length(files))
+p_val <- rep(NA,length(files))
+r2 <- rep(NA,length(files))
+stats_out <- data.frame(ID,file_name,slope,p_val,r2)
+
+for (i in seq_along(files)){
+  data<-read.table(file=paste("~/Documents/Rstudio/BIOL381/COMP BIO",file_name[i],sep="/"),sep=",",header=TRUE)
+  .<-regresser(data)
+  stats_out[i,3:5]<-unlist(.)
+}
+print(stats_out)
+a<-read.csv("2014")
+b<-read.csv("2015")
+c<-read.csv("2016")
+d<-read.csv("2017")
+e<-read.csv("2018")
+f<-read.csv("2019")
+g<-read.csv("2020")
+h<-read.csv("2021")
+i<-read.csv("2022")
+grapher(a)
+grapher(b)
+grapher(c)
+grapher(d)
+grapher(e)
+grapher(f)
+grapher(g)
+grapher(h)
+grapher(i)
+```

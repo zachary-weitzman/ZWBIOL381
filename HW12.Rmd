@@ -1,0 +1,113 @@
+---
+title: "HW12"
+author: "Zachary Weitzman"
+date: "2023-04-26"
+output: html_document
+---
+## Pulling Data and Cleaning for Graphs
+```{r,echo=FALSE}
+library(mdthemes)
+library(DescTools)
+library(tidyverse)
+library(stringr)
+library(ggplot2)
+OGdata<-read.csv("StudentCatalogs&SpecimensInProgress_new copy.csv")
+clean<-OGdata
+clean$TailL<-as.numeric(clean$TailL) #change Tail Length to numeric
+clean$EarL<-as.numeric(clean$EarL) #change Ear Length to numeric
+clean$Date.d.m.y.[clean$Date.d.m.y.=="22/09/2980"]<-"22/09/1980"#Fix date typos
+clean$Date.d.m.y.[clean$Date.d.m.y.=="20/07/2982"]<-"22/09/1982"
+clean<-filter(clean,Genus!="") #getting rid of objects w/o a genus
+#County Typos#
+clean$County[clean$County=="Addision"]<-"Addison"
+clean$County[clean$County=="CHittenden"]<-"Chittenden"
+clean$County[clean$County=="Chittendon"]<-"Chittenden"
+clean$County[clean$County=="Chittenden"]<-"Chittenden"
+clean$County[clean$County=="Frankilin"]<-"Franklin"
+clean$County[clean$County=="GrandIlse"]<-"Grand Isle"
+clean$County[clean$County=="WIndsor"]<-"Windsor"
+clean$Date.d.m.y.<-as.Date(clean$Date.d.m.y., format="%d/%m/%Y")#Change date to date chr
+clean<-filter(clean, Date.d.m.y.!="0019-09-09") #getting rid of objcts w/o year
+clean$year<-lubridate::year(clean$Date.d.m.y.)#pulling the year as new col
+clean<-filter(clean,Epithet!="")
+colony<-filter(clean,str_detect(clean$Other.info,"\\b(?i)lab\\b|\\b(?i)stock\\b|(?i)colony|(?i)laboratory")) #find all specimens with lab, stock, or colony in description
+colony<-filter(colony,!str_detect(colony$Other.info,"\\b(?i)proctor")) #remove all proctor maple idivs
+wild<-clean[!(clean$Other.info %in% colony$Other.info),] #Find indivs from clean not in colony dataset
+wild<-filter(wild, year>=1974&year<=2011) #Eliminate indivs outsode colony date range
+specieslist<-unique(colony$Abbrev.) #List of species present to find singlets and doublets
+colonysubset<-filter(colony, str_detect(colony$Abbrev.,"PELE|PEMA|MIPE")) #New set w/ species w/ >1 indivs
+wildsubset<-filter(wild,str_detect(wild$Abbrev.,"PELE|PEMA|MIPE"))
+#### #####
+
+####Hotellings T####
+colonysubset$label<-"Colony"
+colonysubset$label<-as.factor(colonysubset$label)
+wildsubset$label<-"Wild"
+wildsubset$label<-as.factor(wildsubset$label)
+analysisdata<-bind_rows(wildsubset,colonysubset)
+```
+
+## Scatterplot/Linear Models
+```{r}
+source("MEANFUNC1.R")
+PEMA<-filter(analysisdata, Abbrev.=="PEMA")
+PEMA1<-meaning(PEMA)
+PELE<-filter(analysisdata, Abbrev.=="PELE")
+PELE1<-meaning(PELE)
+MIPE<-filter(analysisdata, Abbrev.=="MIPE")
+MIPE1<-meaning(MIPE)
+
+#PEMA Scatter for Total and Tail
+ggplot(data=PEMA1)+
+  geom_point(aes(TotalL,TailL,shape=label,fill=label,color=label,size=label))+
+  mdthemes::md_theme_classic(base_size=16)+
+  labs(x="Total Length (mm)",y="Tail Length (mm)")+
+  scale_fill_manual(name="",values=c('#88CCEE',"#332C29",'#DDCC77','#AA3377'))+
+  scale_color_manual(name="",values=c('#88CCEE',"#332C29",'#DDCC77','#AA3377'))+
+  scale_shape_manual(values = c(21,23,21,23))+
+  scale_size_manual(values=c(1,3,1,3))+
+  guides(shape=F,fill=F,size=F)+
+  theme(legend.key.height = unit(1,"mm"))
+
+
+#PELE Scatter for Total and Ear
+ggplot(data=PELE1)+
+  geom_point(aes(TotalL,EarL,color=label,shape=label,fill=label,size=label))+
+  mdthemes::md_theme_classic(base_size=16) +
+  labs(x="Total Length (mm)",y="Ear Length (mm)")+
+  scale_fill_manual(name="",values=c('#88CCEE',"#332C29",'#DDCC77','#AA3377'))+
+  scale_color_manual(name="",values=c('#88CCEE',"#332C29",'#DDCC77','#AA3377'))+
+  scale_shape_manual(values = c(21,23,21,23))+
+  scale_size_manual(values=c(1,3,1,3))+
+  guides(shape=F,fill=F,size=F)+
+  theme(legend.key.height = unit(1,"mm"))
+#MIPE Scatter for Foot and Ear
+ggplot(data=MIPE1)+
+  geom_point(aes(FootL,EarL,color=label,shape=label,fill=label,size=label))+
+  mdthemes::md_theme_classic(base_size=16) +
+  labs(x="Foot Length (mm)",y="Ear Length (mm)")+
+  scale_fill_manual(name="",values=c('#88CCEE',"#332C29",'#DDCC77','#AA3377'))+
+  scale_color_manual(name="",values=c('#88CCEE',"#332C29",'#DDCC77','#AA3377'))+
+  scale_shape_manual(values = c(21,23,21,23))+
+  scale_size_manual(values=c(1,3,1,3))+
+  guides(shape=F,fill=F,size=F)+
+  theme(legend.key.height = unit(1,"mm"))
+```
+
+## Histograms
+```{r}
+ggplot(data=PEMA, aes(x=TailL, color=label))+
+  geom_histogram(boundary=1,fill="darkgrey", alpha=0.3, position = "identity")+
+  scale_color_manual(values=c("#88CCEE",'#DDCC77'))+
+  labs(title = "Histogram of Tail Length for Peromyscus maniculatus",x="Tail Length")
+
+ggplot(data=PELE, aes(x=EarL, color=label))+
+  geom_histogram(boundary=1,fill="darkgrey", alpha=0.3, position = "identity")+
+  scale_color_manual(values=c("#88CCEE",'#DDCC77'))+
+  labs(title = "Histogram of Ear Length for Peromyscus leucopus",x="Ear Length")
+
+ggplot(data=MIPE, aes(x=FootL, color=label))+
+  geom_histogram(boundary=1,fill="darkgrey", alpha=0.3, position = "identity")+
+  scale_color_manual(values=c("#88CCEE",'#DDCC77'))+
+  labs(title = "Histogram of Foot Length for Peromyscus leucopus",x="Foot Length")
+```
