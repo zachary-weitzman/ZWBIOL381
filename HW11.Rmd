@@ -18,7 +18,11 @@ p_val <- rep(NA,length(files))
 r2 <- rep(NA,length(files))
 stats_out <- data.frame(ID,file_name,slope,p_val,r2)
 
+<<<<<<< HEAD
 for (i in seq_along(files)){
+=======
+for (i in 1:length(files)){
+>>>>>>> 66f3cac9fe0c4f3b3bc4f9f91b2287d1e47144c7
   data<-read.table(file=paste("~/Documents/Rstudio/BIOL381/COMP BIO",file_name[i],sep="/"),sep=",",header=TRUE)
   .<-regresser(data)
   stats_out[i,3:5]<-unlist(.)
